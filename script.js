@@ -3,9 +3,26 @@ const quoteText = document.getElementById('quote');
 const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
+const loader = document.getElementById('loader');
+
+// Show loading
+function loading() {
+    loader.hidden = false;
+    quoteContainer.hidden = true;
+}
+
+// Hide loading
+function complete() {
+    if (!loader.hidden) {
+        quoteContainer.hidden = false;
+        loader.hidden = true;
+    }
+}
 
 // Get Quote from API
 async function getQuote() {
+    // Start loader
+    loading();
     const apiUrl = 'https://type.fit/api/quotes/?method=getQuote&lang=fr&format=json';
     try {
         const response = await fetch(apiUrl);
@@ -18,7 +35,8 @@ async function getQuote() {
         }
         authorText.innerText = data[number].author;
         quoteText.innerText = data[number].text;
-
+        //Stop loader and show the quote
+        complete();
     } catch (error) {
         console.log(error);
     }
