@@ -5,14 +5,12 @@ const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
 const loader = document.getElementById('loader');
 
-// Show loading
-function loading() {
+function showLoadingSpinner() {
     loader.hidden = false;
     quoteContainer.hidden = true;
 }
 
-// Hide loading
-function complete() {
+function removeLoadingSpinner() {
     if (!loader.hidden) {
         quoteContainer.hidden = false;
         loader.hidden = true;
@@ -21,9 +19,8 @@ function complete() {
 
 // Get Quote from API
 async function getQuote() {
-    // Start loader
-    loading();
-    const apiUrl = 'https://type.fit/api/quotes/?method=getQuote&lang=fr&format=json';
+    showLoadingSpinner();
+    const apiUrl = 'https://type.fit/api/quotes';
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -35,8 +32,7 @@ async function getQuote() {
         }
         authorText.innerText = data[number].author;
         quoteText.innerText = data[number].text;
-        //Stop loader and show the quote
-        complete();
+        removeLoadingSpinner();
     } catch (error) {
         console.log(error);
     }
